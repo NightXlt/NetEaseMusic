@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/playbar_img"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_weight="0"
+        fresco:layout_constraintBottom_toTopOf="@+id/guideline"
+        fresco:layout_constraintLeft_toLeftOf="parent"
+        fresco:placeholderImage="@mipmap/placeholder_disk_210"
+        fresco:placeholderImageScaleType="fitXY"/>
+    <TextView android:id="@+id/tv_song_name"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="8dp"
+              android:layout_marginStart="8dp"
+              android:layout_marginTop="-2dp"
+              android:text="you "
+              android:textSize="16sp"
+              fresco:layout_constraintLeft_toRightOf="@+id/playbar_img"
+              fresco:layout_constraintTop_toTopOf="parent"/>
+    <TextView android:id="@+id/tv_singer"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="8dp"
+              android:layout_marginStart="8dp"
+              android:layout_marginTop="6dp"
+              android:text="you "
+              android:textSize="10sp" fresco:layout_constraintLeft_toRightOf="@+id/playbar_img"
+              fresco:layout_constraintTop_toBottomOf="@+id/tv_song_name"/>
+    <com.bilibili.magicasakura.widgets.TintImageView
+        android:id="@+id/play_list"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:onClick="click_last"
+        android:src="@mipmap/playbar_btn_playlist"
+        fresco:imageTint="@color/theme_color_primary"
+        fresco:layout_constraintBottom_toTopOf="@+id/guideline"
+        fresco:layout_constraintRight_toLeftOf="@+id/control"/>
+
+    <com.bilibili.magicasakura.widgets.TintImageView
+        android:id="@+id/control"
+        android:layout_width="41dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="4dp"
+
+        android:layout_marginRight="4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@mipmap/playbar_btn_play"
+        fresco:imageTint="@color/theme_color_primary"
+        fresco:layout_constraintBottom_toTopOf="@+id/guideline"
+        fresco:layout_constraintRight_toLeftOf="@+id/play_next"/>
+
+    <com.bilibili.magicasakura.widgets.TintImageView
+        android:id="@+id/play_next"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:onClick="click_next"
+        android:src="@mipmap/playbar_btn_next"
+        fresco:imageTint="@color/theme_color_primary"
+        fresco:layout_constraintBottom_toTopOf="@+id/guideline"
+        fresco:layout_constraintRight_toRightOf="parent"/>
+    <android.support.constraint.Guideline android:id="@+id/guideline"
+                                          android:layout_width="wrap_content"
+                                          android:layout_height="wrap_content"
+                                          android:orientation="horizontal"
+                                          fresco:layout_constraintGuide_begin="60dp"
+    />
+    <com.bilibili.magicasakura.widgets.TintProgressBar
+        android:id="@+id/song_progress_normal"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        android:layout_marginBottom="5dp"
+        android:progress="0"
+        android:max="100"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:progressIndeterminateTint="@color/theme_color_primary"/>
+</android.support.constraint.ConstraintLayout>

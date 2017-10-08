@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">NetEaseMusic</string>
+    <string name="navigation_menu">navigation_menu</string>
+    <string name="night_mode">夜间模式</string>
+    <string name="skin">主题换肤</string>
+    <string name="time_close_music">定时关闭音乐</string>
+    <string name="exit">退出</string>
+    <string name="vip">下载音乐品质</string>
+    <string name="created_playlists">创建歌单</string>
+    <string name="local_music">本地音乐</string>
+    <string name="recent_play">最近播放</string>
+    <string name="local_manage">下载管理</string>
+    <string name="my_artist">我的歌手</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
+</resources>

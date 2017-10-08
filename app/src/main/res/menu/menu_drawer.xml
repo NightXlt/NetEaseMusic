@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+    <group android:id="@+id/grou1"
+           android:checkableBehavior="all"
+    >
+        <item
+            android:id="@+id/nav_night"
+            android:icon="@mipmap/topmenu_icn_night"
+            app:drawableTint="@color/theme_color_primary"
+            android:title="@string/night_mode"/>
+
+        <item
+            android:id="@+id/nav_skin"
+            android:icon="@mipmap/topmenu_icn_skin"
+            app:drawableTint="@color/theme_color_primary"
+            android:title="@string/skin"/>
+
+        <item
+            android:id="@+id/nav_time"
+            android:icon="@mipmap/topmenu_icn_time"
+            app:drawableTint="@color/theme_color_primary"
+            android:title="@string/time_close_music"/>
+        <item
+            android:id="@+id/nav_vip"
+            android:icon="@mipmap/topmenu_icn_vip"
+            app:drawableTint="@color/theme_color_primary"
+            android:title="@string/vip"/>
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@mipmap/topmenu_icn_exit"
+            app:drawableTint="@color/theme_color_primary"
+            android:title="@string/exit"/>
+    </group>
+</menu>
