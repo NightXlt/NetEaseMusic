@@ -48,12 +48,9 @@ public class FolderFragment extends MVPBaseFragment<FolderContract.View, FolderP
     private TextView mDialogText;
     private SideBar mSidebar;
     private PreferencesUtility mPreferences;
-    private boolean isAZSort = true;
     private HashMap<String, Integer> positionMap = new HashMap<>();
     View popupView;
     PopupWindow popupWindow;
-    private ConstraintLayout mClSongNumber;
-    private ConstraintLayout mClFolderName;
     private ImageView[] imageviews = new ImageView[3];
 
     @Nullable
@@ -95,15 +92,21 @@ public class FolderFragment extends MVPBaseFragment<FolderContract.View, FolderP
         mPresenter.reloadAdapter();
 
         int density = (int) CommonUtils.getDeviceDensity(context);
-        popupView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.folder_sort_layout, null);
-        popupWindow = new PopupWindow(popupView, 264 * density, 200 * density);
+        popupView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.folder_sort_layout, (ViewGroup) v, false);
+        popupWindow = new PopupWindow(popupView, 264 * density, 160 * density);
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         mPresenter.reloadAdapter();
-        mClFolderName = (ConstraintLayout) popupView.findViewById(R.id.cl_folder_name);
-        mClFolderName.setOnClickListener(this);
-        mClSongNumber = (ConstraintLayout) popupView.findViewById(R.id.cl_song_number);
-        mClSongNumber.setOnClickListener(this);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                backgroundAlpha(1f);
+            }
+        });
+        ConstraintLayout clFolderName = (ConstraintLayout) popupView.findViewById(R.id.cl_folder_name);
+        clFolderName.setOnClickListener(this);
+        ConstraintLayout clSongNumber = (ConstraintLayout) popupView.findViewById(R.id.cl_song_number);
+        clSongNumber.setOnClickListener(this);
         imageviews[1] = (ImageView) popupView.findViewById(R.id.iv_choose_1);
         imageviews[2] = (ImageView) popupView.findViewById(R.id.iv_choose_2);
 
@@ -151,6 +154,7 @@ public class FolderFragment extends MVPBaseFragment<FolderContract.View, FolderP
                 if (c != 0) {
                     imageviews[c].setVisibility(View.VISIBLE);
                 }
+                backgroundAlpha(0.75f);
                 return true;
             case R.id.get_lyric:
                 mPresenter.reloadAdapter();
@@ -165,7 +169,7 @@ public class FolderFragment extends MVPBaseFragment<FolderContract.View, FolderP
 
     @Override
     public void updateResults(List<FolderInfo> folderInfos) {
-        isAZSort = TextUtils.equals(mPreferences.getFolderOrder(), SortOrder.FolderOrder.FOLDER_A_Z);
+        boolean isAZSort = TextUtils.equals(mPreferences.getFolderOrder(), SortOrder.FolderOrder.FOLDER_A_Z);
         if (isAZSort) {
             Collections.sort(folderInfos, new FolderComparator());
             for (int i = 0; i < folderInfos.size(); i++) {
@@ -205,4 +209,6 @@ public class FolderFragment extends MVPBaseFragment<FolderContract.View, FolderP
                 break;
         }
     }
+
+
 }

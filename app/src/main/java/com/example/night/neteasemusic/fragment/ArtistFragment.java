@@ -95,9 +95,16 @@ public class ArtistFragment extends MVPBaseFragment<ArtistContract.View, ArtistP
         mPresenter.reloadAdapter();
         int density = (int) CommonUtils.getDeviceDensity(context);
         popupView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.artist_sort_layout, null);
-        popupWindow = new PopupWindow(popupView, 264 * density, 240 * density);
+        popupWindow = new PopupWindow(popupView, 264 * density, 160 * density);
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                backgroundAlpha(1f);
+            }
+        });
+
         mPresenter.reloadAdapter();
         mClArtistName = (ConstraintLayout) popupView.findViewById(R.id.cl_artist_name);
         mClArtistName.setOnClickListener(this);
@@ -148,6 +155,7 @@ public class ArtistFragment extends MVPBaseFragment<ArtistContract.View, ArtistP
                 if (c != 0) {
                     imageviews[c].setVisibility(View.VISIBLE);
                 }
+                backgroundAlpha(0.75f);
                 return true;
             case R.id.get_lyric:
                 mPresenter.reloadAdapter();
@@ -199,4 +207,6 @@ public class ArtistFragment extends MVPBaseFragment<ArtistContract.View, ArtistP
                 break;
         }
     }
+
+
 }

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bilibili.magicasakura.widgets.TintImageView;
@@ -24,9 +25,10 @@ import java.util.List;
  * @author Night
  * @since 2017-10-13
  */
-public class SingleAdapter extends RecyclerView.Adapter<SingleAdapter.ViewHolder> {
+public class SingleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context context;
     private List<MusicInfo> items;
+
 
     public SingleAdapter(List<MusicInfo> items, Context context) {
         this.items = items;
@@ -34,19 +36,34 @@ public class SingleAdapter extends RecyclerView.Adapter<SingleAdapter.ViewHolder
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent,
-                                         int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_single, parent, false);
-        return new ViewHolder(v);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                      int viewType) {
+        View v;
+        if (getItemViewType(viewType) == 0) {
+            return new FirstViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_single_first, parent, false));
+        } else {
+            return new SecondViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_single, parent, false));
+        }
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         MusicInfo item = items.get(position);
-        holder.mainTitle.setText(item.musicName);
-        holder.title.setText(item.artist);
+        if (holder instanceof FirstViewHolder) {
+        } else {
+            ((SecondViewHolder) holder).mainTitle.setText(item.musicName);
+            ((SecondViewHolder) holder).title.setText(item.artist);
+
+        }
+
         //TODO:播放状态图标显示的控制
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? 0 : 1;
     }
 
     @Override
@@ -61,22 +78,20 @@ public class SingleAdapter extends RecyclerView.Adapter<SingleAdapter.ViewHolder
         items = folderInfos;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class SecondViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public View rootView;
         public ImageView moreOverflow;
         public TextView mainTitle, title;
         public TintImageView playState;
 
-        public ViewHolder(View rootView) {
+        public SecondViewHolder(View rootView) {
             super(rootView);
             this.rootView = rootView;
             this.mainTitle = (TextView) rootView.findViewById(R.id.viewpager_list_toptext);
             this.title = (TextView) rootView.findViewById(R.id.viewpager_list_bottom_text);
             this.playState = (TintImageView) rootView.findViewById(R.id.play_state);
             this.moreOverflow = (ImageView) rootView.findViewById(R.id.viewpager_list_button);
-            rootView.setOnClickListener(this);
             moreOverflow.setOnClickListener(this);
-
         }
 
         @Override
@@ -90,6 +105,40 @@ public class SingleAdapter extends RecyclerView.Adapter<SingleAdapter.ViewHolder
                 case R.id.relativelayout:
                     //TODO:点击布局播放音乐
                     Snackbar.make(rootView, "click rootview", Snackbar.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public static class FirstViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private TintImageView mPlayAll;
+        private TextView mPlayAllText;
+        private TextView mPlayAllNumber;
+        private LinearLayout mLlSelect;
+        private View rootView;
+
+        public FirstViewHolder(View rootView) {
+            super(rootView);
+            this.rootView = rootView;
+            this.mPlayAll = (TintImageView) rootView.findViewById(R.id.play_all);
+            this.mPlayAllText = (TextView) rootView.findViewById(R.id.play_all_text);
+            this.mPlayAllNumber = (TextView) rootView.findViewById(R.id.play_all_number);
+            this.mLlSelect = (LinearLayout) rootView.findViewById(R.id.ll_select);
+            this.mLlSelect.setOnClickListener(this);
+            this.rootView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.ll_select:
+                    Snackbar.make(mLlSelect, "click select", Snackbar.LENGTH_SHORT).show();
+                    break;
+                case R.id.rl_play_all:
+                    Snackbar.make(rootView, "click play all", Snackbar.LENGTH_SHORT).show();
                     break;
                 default:
                     break;

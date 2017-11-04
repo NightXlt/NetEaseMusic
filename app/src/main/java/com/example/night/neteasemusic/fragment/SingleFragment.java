@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -19,7 +18,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bilibili.magicasakura.widgets.TintImageView;
 import com.example.night.neteasemusic.NetEaseApplication;
 import com.example.night.neteasemusic.R;
 import com.example.night.neteasemusic.adapter.SingleAdapter;
@@ -45,9 +43,7 @@ import java.util.List;
 
 public class SingleFragment extends MVPBaseFragment<SingleContract.View, SinglePresenter> implements SingleContract.View, View.OnClickListener {
 
-    private TintImageView mPlayAll;
-    private TextView mPlayAllText;
-    private TextView mPlayAllNumber;
+
     private ImageView mSelect;
     private RelativeLayout mRelativelayout;
     private RecyclerView mRecyclerview;
@@ -82,19 +78,12 @@ public class SingleFragment extends MVPBaseFragment<SingleContract.View, SingleP
 
 
     private void initView(View v) {
-        mPlayAll = (TintImageView) v.findViewById(R.id.play_all);
-        mPlayAllText = (TextView) v.findViewById(R.id.play_all_text);
-        mPlayAllNumber = (TextView) v.findViewById(R.id.play_all_number);
-        mSelect = (ImageView) v.findViewById(R.id.select);
-        mRelativelayout = (RelativeLayout) v.findViewById(R.id.relativelayout);
         mRecyclerview = (RecyclerView) v.findViewById(R.id.recyclerview);
         mDialogText = (TextView) v.findViewById(R.id.dialog_text);
         mSingleAdapter = new SingleAdapter(null, context);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerview.setAdapter(mSingleAdapter);
         mRecyclerview.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST));
-        mRelativelayout.setOnClickListener(this);
-        mSelect.setOnClickListener(this);
         mSidebar = (SideBar) v.findViewById(R.id.sidebar);
         mSidebar.setOnTouchLetterListener(new SideBar.OnTouchLetterListener() {
             @Override
@@ -113,6 +102,13 @@ public class SingleFragment extends MVPBaseFragment<SingleContract.View, SingleP
         popupWindow = new PopupWindow(popupView, 264 * density, 240 * density);
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                backgroundAlpha(1f);
+            }
+        });
+
         mPresenter.reloadAdapter();
         mClTime = (ConstraintLayout) popupView.findViewById(R.id.cl_time);
         mClTime.setOnClickListener(this);
@@ -133,12 +129,6 @@ public class SingleFragment extends MVPBaseFragment<SingleContract.View, SingleP
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.relativelayout:
-                Snackbar.make(mRelativelayout, "click rootview", Snackbar.LENGTH_SHORT).show();
-                break;
-            case R.id.select:
-                Snackbar.make(mRelativelayout, "click select", Snackbar.LENGTH_SHORT).show();
-                break;
             case R.id.cl_time:
                 NetEaseApplication.sSp.edit().putInt("single_sort", 1).apply();
                 popupWindow.dismiss();
@@ -203,6 +193,7 @@ public class SingleFragment extends MVPBaseFragment<SingleContract.View, SingleP
                 if (c != 0) {
                     imageviews[c].setVisibility(View.VISIBLE);
                 }
+                backgroundAlpha(0.75f);
                 return true;
             case R.id.get_lyric:
                 return true;

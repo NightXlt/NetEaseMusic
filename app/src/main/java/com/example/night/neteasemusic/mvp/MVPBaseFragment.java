@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.WindowManager;
 
 import com.example.night.neteasemusic.listener.MusicStateListener;
 
@@ -80,5 +81,11 @@ public abstract class MVPBaseFragment<V extends BaseView, T extends BasePresente
     @Override
     public void updateTrackInfo() {
 
+    }
+
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = context.getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        context.getWindow().setAttributes(lp);
     }
 }

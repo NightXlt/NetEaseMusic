@@ -70,7 +70,7 @@ public class LocalMusicActivity extends BaseActivity {
         adapter.addFragment(new FolderFragment(), "文件夹");
         mViewpager.setAdapter(adapter);
         mTabs.setupWithViewPager(mViewpager);
-        mTabs.setTabTextColors(R.color.text_color, ThemeUtils.getThemeColorStateList(this, R.color.theme_color_primary).getDefaultColor());
+        mTabs.setTabTextColors(R.color.black, ThemeUtils.getThemeColorStateList(this, R.color.theme_color_primary).getDefaultColor());
         mTabs.setSelectedTabIndicatorColor(ThemeUtils.getThemeColorStateList(this, R.color.theme_color_primary).getDefaultColor());
     }
 

@@ -30,5 +30,6 @@
     <string name="sort_by_add_time">按添加时间</string>
     <string name="sort_by_song_number">按歌曲数量</string>
     <string name="sort_by_folder_name">按文件夹名</string>
+    <string name="more_choice">多选</string>
 
 </resources>

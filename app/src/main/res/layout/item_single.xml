@@ -3,7 +3,7 @@
                 android:id="@+id/relativelayout"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="#f1f3f4">
+                android:background="?android:attr/selectableItemBackground">
 
     <com.bilibili.magicasakura.widgets.TintImageView
         android:id="@+id/play_state"
