@@ -8,7 +8,7 @@ package com.example.night.neteasemusic.model;
 public class PermissionModel {
 
     private String name;
-    //权限名称  
+    //权限名称
     private String permisson;
     //申请理由
     private String reason;

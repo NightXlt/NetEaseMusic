@@ -10,6 +10,7 @@ import android.support.annotation.ColorRes;
 import com.bilibili.magicasakura.utils.ThemeUtils;
 import com.example.night.neteasemusic.utils.ThemeHelper;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.itheima.retrofitutils.ItheimaHttp;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,6 +43,7 @@ public class NetEaseApplication extends Application implements ThemeUtils.switch
         sContext = this;
         sSp = PreferenceManager.getDefaultSharedPreferences(this);
         fixedThreadPool = Executors.newFixedThreadPool(5);
+        ItheimaHttp.init(this, "http://ws.audioscrobbler.com/2.0/");
     }
 
     @Override

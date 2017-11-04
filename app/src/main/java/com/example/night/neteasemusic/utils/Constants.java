@@ -26,4 +26,6 @@ public class Constants {
     public final static int REQUEST_OPEN_APPLICATION_SETTINGS_CODE = 12345;
 
     public static final int CARD_BLACK = 0x9;
+
+
 }

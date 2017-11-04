@@ -30,6 +30,7 @@ public class BaseFragment extends Fragment implements MusicStateListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        context = null;
     }
 
     @Override

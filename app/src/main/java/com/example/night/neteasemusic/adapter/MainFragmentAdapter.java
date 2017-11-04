@@ -5,7 +5,9 @@
 package com.example.night.neteasemusic.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import com.bilibili.magicasakura.widgets.TintImageView;
 import com.example.night.neteasemusic.R;
+import com.example.night.neteasemusic.activity.LocalMusicActivity;
 import com.example.night.neteasemusic.bean.MainFragmentItem;
 import com.example.night.neteasemusic.bean.Playlist;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -79,7 +82,7 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
                 holder.count.setText("(" + item.getCount() + ")");
                 holder.image.setImageResource(item.getAvatar());
                 holder.image.setImageTintList(R.color.theme_color_primary);
-                // setOnListener(holder, i);
+                setOnListener(holder, position);
                 break;
             case 1:
                 Playlist playlist = (Playlist) itemResults.get(position);
@@ -120,6 +123,36 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
         return itemResults.size();
     }
 
+    private void setOnListener(ViewHolder itemHolder, final int position) {
+        switch (position) {
+            case 0:
+                itemHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(context, LocalMusicActivity.class);
+                                intent.putExtra("page_number", 0);
+                                context.startActivity(intent);
+                            }
+                        }, 60);
+
+                    }
+                });
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                break;
+        }
+
+    }
     @Override
     public int getItemViewType(int position) {
         if (getItemCount() == 0) {

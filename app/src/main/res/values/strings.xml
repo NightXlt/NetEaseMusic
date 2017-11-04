@@ -13,4 +13,22 @@
     <string name="my_artist">我的歌手</string>
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>
+
+    <string name="menu_sort_by">选择排序方式</string>
+    <string name="sort_order_entry_az">按名称排序</string>
+    <string name="sort_order_entry_dateadded">按添加时间排序</string>
+    <string name="sort_order_entry_album">按专辑排序</string>
+    <string name="sort_order_entry_artist">按歌手排序</string>
+    <string name="sort_order_entry_number_of_songs">按歌曲数量排序</string>
+    <string name="scan_local_music">扫描本地音乐</string>
+    <string name="get_lyric">获取封面歌词</string>
+    <string name="upgrade_music_quality">升级音乐品质</string>
+    <string name="choose_sort_order">选择排序方式</string>
+    <string name="sort_by_artist_name">按歌手名</string>
+    <string name="sort_by_album_name">按专辑名</string>
+    <string name="sort_by_name">按单曲名</string>
+    <string name="sort_by_add_time">按添加时间</string>
+    <string name="sort_by_song_number">按歌曲数量</string>
+    <string name="sort_by_folder_name">按文件夹名</string>
+
 </resources>

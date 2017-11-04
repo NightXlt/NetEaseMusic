@@ -1,6 +1,5 @@
 package com.example.night.neteasemusic.activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Intent;
@@ -8,13 +7,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,13 +24,13 @@ import com.bilibili.magicasakura.utils.ThemeUtils;
 import com.bilibili.magicasakura.widgets.TintToolbar;
 import com.example.night.neteasemusic.NetEaseApplication;
 import com.example.night.neteasemusic.R;
+import com.example.night.neteasemusic.contract.MainActivityContract;
 import com.example.night.neteasemusic.fragment.MainFragment;
 import com.example.night.neteasemusic.fragment.SocialFragment;
 import com.example.night.neteasemusic.fragment.TabNetPagerFragment;
-import com.example.night.neteasemusic.model.PermissionModel;
-import com.example.night.neteasemusic.utils.CommonUtils;
+import com.example.night.neteasemusic.mvp.MVPBaseActivity;
+import com.example.night.neteasemusic.presenter.MainActivityPresenter;
 import com.example.night.neteasemusic.utils.Constants;
-import com.example.night.neteasemusic.utils.PermissionHelper;
 import com.example.night.neteasemusic.utils.ThemeHelper;
 import com.example.night.neteasemusic.view.CardPickerDialog;
 
@@ -37,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, CardPickerDialog.ClickListener {
+public class MainActivity extends MVPBaseActivity<MainActivityContract.View, MainActivityPresenter> implements View.OnClickListener, CardPickerDialog.ClickListener, MainActivityContract.View {
     private int mode = 1;//0:night 1:day
     private NavigationView mNavMenu;
     private DrawerLayout mNavLayout;
@@ -49,8 +50,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private ArrayList<ImageView> tabs = new ArrayList<>();
 
-    private List<PermissionModel> mPermissionModels = new ArrayList<>();
-    PermissionHelper mPermissionHelper;
+    private CustomViewPagerAdapter mCustomViewPagerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,39 +61,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         initView();
         mode = NetEaseApplication.sSp.getInt("mode", 1);
         setViewPager();
-        requestPermission();
-    }
-
-    private void requestPermission() {
-        if (CommonUtils.isLollipop()) {
-            mPermissionModels.add(new PermissionModel("电话", Manifest.permission.READ_PHONE_STATE, "我们需要读取手机信息的权限来标识您的身份", Constants.READ_PHONE_STATE_CODE));
-            mPermissionModels.add(new PermissionModel("存储空间", Manifest.permission.WRITE_EXTERNAL_STORAGE, "我们需要您允许我们读写你的存储卡，以方便我们临时保存一些数据", Constants.WRITE_EXTERNAL_STORAGE_CODE));
-
-            mPermissionHelper = new PermissionHelper(mPermissionModels, this);
-            mPermissionHelper.setOnApplyPermissionListener(new PermissionHelper.onApplyPermissionListener() {
-                @Override
-                public void onAfterApplyAllPermission() {
-                    Log.i("TAG", "all permission has been granted");
-                }
-            });
-            if (mPermissionHelper.isAllRequestedPermissionGranted()) {
-                Log.i("TAG", "all permission has been granted");
-            } else {
-                mPermissionHelper.applyPermissions();
-            }
-        }
+        mPresenter.requestPermission(this);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        mPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mPresenter.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mPermissionHelper.onActivityResult(requestCode, resultCode, data);
+        mPresenter.onActivityResult(requestCode, resultCode, data);
     }
 
     private void initView() {
@@ -184,11 +165,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         final MainFragment mainFragment = new MainFragment();
         final TabNetPagerFragment tabNetPagerFragment = new TabNetPagerFragment();
         final SocialFragment socialFragment = new SocialFragment();
-        CustomViewPagerAdapter customViewPagerAdapter = new CustomViewPagerAdapter(getSupportFragmentManager());
-        customViewPagerAdapter.addFragment(tabNetPagerFragment);
-        customViewPagerAdapter.addFragment(mainFragment);
-        customViewPagerAdapter.addFragment(socialFragment);
-        mCustomViewPager.setAdapter(customViewPagerAdapter);
+        mCustomViewPagerAdapter = new CustomViewPagerAdapter(getSupportFragmentManager());
+        mCustomViewPagerAdapter.addFragment(tabNetPagerFragment);
+        mCustomViewPagerAdapter.addFragment(mainFragment);
+        mCustomViewPagerAdapter.addFragment(socialFragment);
+        mCustomViewPager.setAdapter(mCustomViewPagerAdapter);
         mCustomViewPager.setCurrentItem(1);
         mBarMusic.setSelected(true);
         mCustomViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -243,10 +224,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             );
         }
         changeTheme();
+        int l = mCustomViewPagerAdapter.mFragments.size();
+        mCustomViewPagerAdapter.mFragments.clear();
+        final MainFragment mainFragment = new MainFragment();
+        final TabNetPagerFragment tabNetPagerFragment = new TabNetPagerFragment();
+        final SocialFragment socialFragment = new SocialFragment();
+        mCustomViewPagerAdapter.addFragment(tabNetPagerFragment);
+        mCustomViewPagerAdapter.addFragment(mainFragment);
+        mCustomViewPagerAdapter.addFragment(socialFragment);
+        mCustomViewPagerAdapter.notifyDataSetChanged();
     }
 
+
     static class CustomViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragments = new ArrayList<>();
+        public final List<Fragment> mFragments = new ArrayList<>();
 
         public CustomViewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -256,9 +247,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             mFragments.add(fragment);
         }
 
+
         @Override
         public Fragment getItem(int position) {
             return mFragments.get(position);
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return PagerAdapter.POSITION_NONE;
         }
 
         @Override
@@ -268,8 +265,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
+    private long time = 0;
+
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return mPresenter.keyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean KeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - time > 1000) {
+                Snackbar.make(mToolbar, "再按一次返回桌面", Snackbar.LENGTH_SHORT).show();
+                time = System.currentTimeMillis();
+            } else {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            }
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 }

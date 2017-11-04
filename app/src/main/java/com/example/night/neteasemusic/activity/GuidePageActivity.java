@@ -1,15 +1,15 @@
 package com.example.night.neteasemusic.activity;
 
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 
-import com.example.night.neteasemusic.NetEaseApplication;
 import com.example.night.neteasemusic.R;
+import com.example.night.neteasemusic.contract.GuidePageContract;
+import com.example.night.neteasemusic.mvp.MVPBaseActivity;
+import com.example.night.neteasemusic.presenter.GuidePagePresenter;
 
 
 /**
@@ -17,7 +17,7 @@ import com.example.night.neteasemusic.R;
  * Desc:
  */
 
-public class GuidePageActivity extends AppCompatActivity {
+public class GuidePageActivity extends MVPBaseActivity<GuidePageContract.View, GuidePagePresenter> implements GuidePageContract.View {
     private ProgressBar mPbProgress;
 
     @Override
@@ -26,32 +26,17 @@ public class GuidePageActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_guide_page);
-        initView();
-        NetEaseApplication.fixedThreadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i <= 100; i += i) {
-                    progress(i);
-                    i += 10;
-                }
-                startActivity(new Intent(GuidePageActivity.this, MainActivity.class));
-                finish();
-            }
-        });
-
+        mPbProgress = (ProgressBar) findViewById(R.id.pb_progress);
+        mPresenter.load(GuidePageActivity.this, MainActivity.class);
     }
 
-
-    private void progress(int i) {
+    @Override
+    public void updateProgress(int i) {
         mPbProgress.setProgress(i);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    private void initView() {
-        mPbProgress = (ProgressBar) findViewById(R.id.pb_progress);
     }
 }

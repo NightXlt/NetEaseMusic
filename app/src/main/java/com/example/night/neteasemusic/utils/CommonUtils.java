@@ -7,7 +7,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.WindowManager;
 
 import com.example.night.neteasemusic.NetEaseApplication;
 import com.example.night.neteasemusic.R;
@@ -266,5 +268,11 @@ public class CommonUtils {
         return (int) (dpValue * scale + 0.5f);
     }
 
-
+    public static float getDeviceDensity(Context context) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager wm = (WindowManager) context.getSystemService(
+                Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(metrics);
+        return metrics.density;
+    }
 }

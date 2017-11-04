@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@mipmap/actionbar_more"
+        android:orderInCategory="100"
+        android:title="  "
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/scan_local_music"
+                android:icon="@mipmap/mr"
+                android:title="@string/scan_local_music"/>
+            <item
+                android:id="@+id/choose_rank_method"
+                android:icon="@mipmap/mp"
+                android:title="@string/choose_sort_order"/>
+            <item
+                android:id="@+id/get_lyric"
+                android:icon="@mipmap/mm"
+                android:title="@string/get_lyric"/>
+            <item
+                android:id="@+id/upgrade_music_quality"
+                android:icon="@mipmap/ms"
+                android:title="@string/upgrade_music_quality"/>
+        </menu>
+
+    </item>
+</menu>
